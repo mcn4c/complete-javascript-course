@@ -22,18 +22,15 @@ let playing = true;
 let currentScore = 0;
 
 function switchPlayer() {
-	document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
-	currentScore = 0;
-	document.getElementById(`current--${activePlayer}`).textContent = 0;
-	player0El.classList.toggle('player--active');
-	player1El.classList.toggle('player--active');
+	if (playing) {
+		document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
+		currentScore = 0;
+		document.getElementById(`current--${activePlayer}`).textContent = 0;
+		player0El.classList.toggle('player--active');
+		player1El.classList.toggle('player--active');
+	}
 }
 
-//will help us know which player is active
-
-//starting conditions
-// score0El.textContent = 0;
-// score1El.textContent = 0;
 diceEl.classList.add('hidden');
 
 //rolling dice functionality
@@ -64,22 +61,22 @@ btnRoll.addEventListener('click', function() {
 	}
 });
 
+//Hold btn functionality
 btnHold.addEventListener('click', function() {
 	if (playing) {
 		//1. add current score to active player's score
-		//because created scores array, following works:
 		document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer] += currentScore;
 
-		activePlayer = activePlayer === 0 ? 1 : 0;
-
 		//2. check if player's score is >= 100, then finish the game
-		if (scores[activePlayer >= 100]) {
+		if (scores[activePlayer] >= 10) {
 			playing = false;
 			diceEl.classList.add('hidden');
 
 			document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
 			document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
 		}
+		//switch which player is active
+		activePlayer = activePlayer === 0 ? 1 : 0;
 
 		//switch to next player
 		switchPlayer();
